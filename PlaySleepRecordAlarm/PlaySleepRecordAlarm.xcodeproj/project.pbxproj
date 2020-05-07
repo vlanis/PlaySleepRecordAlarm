@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5659255D2464433C0031373B /* Date+PlaySleepRecordAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659255C2464433C0031373B /* Date+PlaySleepRecordAlarm.swift */; };
+		5659255F246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659255E246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift */; };
 		56B236ED24643B74008746CB /* BasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B236EC24643B74008746CB /* BasicTableViewCell.swift */; };
 		56F7D38F24630DD80096C1D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D38E24630DD80096C1D6 /* AppDelegate.swift */; };
 		56F7D39124630DD80096C1D6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D39024630DD80096C1D6 /* SceneDelegate.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5659255C2464433C0031373B /* Date+PlaySleepRecordAlarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+PlaySleepRecordAlarm.swift"; sourceTree = "<group>"; };
+		5659255E246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+PlaySleepRecordAlarm.swift"; sourceTree = "<group>"; };
 		56B236EC24643B74008746CB /* BasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTableViewCell.swift; sourceTree = "<group>"; };
 		56F7D38B24630DD80096C1D6 /* PlaySleepRecordAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaySleepRecordAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F7D38E24630DD80096C1D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -64,6 +68,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5659255B246443110031373B /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				5659255C2464433C0031373B /* Date+PlaySleepRecordAlarm.swift */,
+				5659255E246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		56F7D38224630DD70096C1D6 = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +117,7 @@
 		56F7D3B0246340050096C1D6 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				5659255B246443110031373B /* Extension */,
 				56F7D38E24630DD80096C1D6 /* AppDelegate.swift */,
 				56F7D39024630DD80096C1D6 /* SceneDelegate.swift */,
 				56F7D3B82464366C0096C1D6 /* Rows */,
@@ -252,8 +266,10 @@
 				56F7D38F24630DD80096C1D6 /* AppDelegate.swift in Sources */,
 				56F7D39124630DD80096C1D6 /* SceneDelegate.swift in Sources */,
 				56B236ED24643B74008746CB /* BasicTableViewCell.swift in Sources */,
+				5659255F246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift in Sources */,
 				56F7D3B7246435420096C1D6 /* SleepAlarmViewModel.swift in Sources */,
 				56F7D3BA246436810096C1D6 /* Row.swift in Sources */,
+				5659255D2464433C0031373B /* Date+PlaySleepRecordAlarm.swift in Sources */,
 				56F7D3B5246434B30096C1D6 /* SleepAlarmViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
