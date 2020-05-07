@@ -10,6 +10,11 @@ import Foundation
 
 protocol SleepAlarmViewModel {
     var rows: [RowDescription] {get}
+    
+    func shouldPresentSleepTimerOptions(_ handler: ((_ options: [SleepTimer]) -> Void)?)
+    func didSelectSleepTimerOption(_ sleepTimer: SleepTimer)
+    
+    func shouldReloadSleepAlarmView(_ handler: (() -> Void)?)
 }
 
 enum SleepTimer: CustomStringConvertible {
@@ -19,7 +24,7 @@ enum SleepTimer: CustomStringConvertible {
     var description: String {
         switch self {
         case .off:
-            return NSLocalizedString("Off", comment: "Off")
+            return NSLocalizedString("off", comment: "off")
         case .duration(let minutes):
             return String(minutes) + " " + "min"
         }
@@ -45,6 +50,16 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private var sleepTimer: SleepTimer = .duration(minutes: 20)
     private var alarmTime = Date.fromComponents(hour: 8, minute: 30)!
     
+    private var sleepTimerOptions: [SleepTimer] = [.off,
+                                                   .duration(minutes: 1),
+                                                   .duration(minutes: 5),
+                                                   .duration(minutes: 10),
+                                                   .duration(minutes: 15),
+                                                   .duration(minutes: 20)]
+    
+    private var shouldPresentSleepTimerOptionsHandler: ((_ options: [SleepTimer]) -> Void)?
+    private var shouldReloadSleepAlarmViewHandler: (() -> Void)?
+    
     // MARK:- Initalization
     
     init() {
@@ -57,8 +72,8 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         let sleepTimerRow = Row<BasicTableViewCell>(configure: { [unowned self] cell, _ in
             cell.textLabel?.text = NSLocalizedString("Sleep Timer", comment: "Sleep Timer")
             cell.detailTextLabel?.text = String(describing: self.sleepTimer.description)
-        }, selection: { _ in
-            
+        }, selection: { [unowned self] _ in
+            self.shouldPresentSleepTimerOptionsHandler?(self.sleepTimerOptions)
         }, isEnabled: true)
         
         let alarmRow = Row<BasicTableViewCell>(configure: { [unowned self] cell, _ in
@@ -69,5 +84,29 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         }, isEnabled: true)
         
         rows = [sleepTimerRow, alarmRow]
+    }
+    
+    // MARK:- Callbacks
+    
+    func shouldPresentSleepTimerOptions(_ handler: ((_ options: [SleepTimer]) -> Void)?) {
+        shouldPresentSleepTimerOptionsHandler = handler
+    }
+    
+    func shouldReloadSleepAlarmView(_ handler: (() -> Void)?) {
+        shouldReloadSleepAlarmViewHandler = handler
+    }
+    
+    // MARK:- Events
+    
+    private func didChangeSleepAlarmRelatedData() {
+        reloadRows()
+        shouldReloadSleepAlarmViewHandler?()
+    }
+    
+    // MARK:- Sleep Timer
+    
+    func didSelectSleepTimerOption(_ sleepTimer: SleepTimer) {
+        self.sleepTimer = sleepTimer
+        didChangeSleepAlarmRelatedData()
     }
 }

@@ -12,7 +12,22 @@ final class SleepAlarmViewController: UIViewController {
     
     // MARK:- Properties
     
-    let viewModel: SleepAlarmViewModel = SleepAlarmViewModelImp()
+    var viewModel: SleepAlarmViewModel! {
+        willSet {
+            viewModel?.shouldPresentSleepTimerOptions(nil)
+            viewModel?.shouldReloadSleepAlarmView(nil)
+        }
+        
+        didSet {
+            viewModel?.shouldPresentSleepTimerOptions { [weak self] options in
+                self?.presentSleepTimerOptions(options)
+            }
+            
+            viewModel?.shouldReloadSleepAlarmView { [weak self] in
+                self?.reloadSleepAlarmList()
+            }
+        }
+    }
     
     @IBOutlet var tableView: UITableView! {
         didSet {
@@ -24,6 +39,11 @@ final class SleepAlarmViewController: UIViewController {
     @IBOutlet var pauseButton: UIButton!
     
     // MARK:- View lifecycle
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        viewModel = SleepAlarmViewModelImp()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +58,29 @@ final class SleepAlarmViewController: UIViewController {
     
     func reloadSleepAlarmList() {
         tableView.reloadData()
+    }
+    
+    // MARK:- Events
+    
+    func didSelectSleepTimerOption(_ sleepTimer: SleepTimer) {
+        viewModel.didSelectSleepTimerOption(sleepTimer)
+    }
+    
+    // MARK:- Presentation
+    
+    func presentSleepTimerOptions(_ options: [SleepTimer]) {
+        let actionSheet = UIAlertController(title: NSLocalizedString("Sleep Timer", comment: "Sleep Timer"), message: nil, preferredStyle: .actionSheet)
+        
+        options.forEach { sleepTimer in
+            let action = UIAlertAction(title: String(describing: sleepTimer), style: .default, handler: { [unowned self] _ in
+                self.didSelectSleepTimerOption(sleepTimer)
+            })
+            actionSheet.addAction(action)
+        }
+        
+        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel))
+        
+        present(actionSheet, animated: true)
     }
 }
 
