@@ -7,13 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		56B236ED24643B74008746CB /* BasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B236EC24643B74008746CB /* BasicTableViewCell.swift */; };
 		56F7D38F24630DD80096C1D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D38E24630DD80096C1D6 /* AppDelegate.swift */; };
 		56F7D39124630DD80096C1D6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D39024630DD80096C1D6 /* SceneDelegate.swift */; };
-		56F7D39324630DD80096C1D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D39224630DD80096C1D6 /* ViewController.swift */; };
 		56F7D39624630DD80096C1D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56F7D39424630DD80096C1D6 /* Main.storyboard */; };
 		56F7D39824630DDC0096C1D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56F7D39724630DDC0096C1D6 /* Assets.xcassets */; };
 		56F7D39B24630DDC0096C1D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56F7D39924630DDC0096C1D6 /* LaunchScreen.storyboard */; };
 		56F7D3A624630DDC0096C1D6 /* PlaySleepRecordAlarmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D3A524630DDC0096C1D6 /* PlaySleepRecordAlarmTests.swift */; };
+		56F7D3B5246434B30096C1D6 /* SleepAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D3B4246434B30096C1D6 /* SleepAlarmViewController.swift */; };
+		56F7D3B7246435420096C1D6 /* SleepAlarmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D3B6246435420096C1D6 /* SleepAlarmViewModel.swift */; };
+		56F7D3BA246436810096C1D6 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D3B9246436810096C1D6 /* Row.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,10 +30,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		56B236EC24643B74008746CB /* BasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTableViewCell.swift; sourceTree = "<group>"; };
 		56F7D38B24630DD80096C1D6 /* PlaySleepRecordAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaySleepRecordAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F7D38E24630DD80096C1D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56F7D39024630DD80096C1D6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		56F7D39224630DD80096C1D6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		56F7D39524630DD80096C1D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		56F7D39724630DDC0096C1D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56F7D39A24630DDC0096C1D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -38,6 +41,9 @@
 		56F7D3A124630DDC0096C1D6 /* PlaySleepRecordAlarmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlaySleepRecordAlarmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F7D3A524630DDC0096C1D6 /* PlaySleepRecordAlarmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySleepRecordAlarmTests.swift; sourceTree = "<group>"; };
 		56F7D3A724630DDC0096C1D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56F7D3B4246434B30096C1D6 /* SleepAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepAlarmViewController.swift; sourceTree = "<group>"; };
+		56F7D3B6246435420096C1D6 /* SleepAlarmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepAlarmViewModel.swift; sourceTree = "<group>"; };
+		56F7D3B9246436810096C1D6 /* Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +106,8 @@
 			children = (
 				56F7D38E24630DD80096C1D6 /* AppDelegate.swift */,
 				56F7D39024630DD80096C1D6 /* SceneDelegate.swift */,
-				56F7D39224630DD80096C1D6 /* ViewController.swift */,
+				56F7D3B82464366C0096C1D6 /* Rows */,
+				56F7D3B22463505A0096C1D6 /* Screens */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -113,6 +120,32 @@
 				56F7D39924630DDC0096C1D6 /* LaunchScreen.storyboard */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		56F7D3B22463505A0096C1D6 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				56F7D3B3246350690096C1D6 /* SleepAlarm */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		56F7D3B3246350690096C1D6 /* SleepAlarm */ = {
+			isa = PBXGroup;
+			children = (
+				56F7D3B4246434B30096C1D6 /* SleepAlarmViewController.swift */,
+				56F7D3B6246435420096C1D6 /* SleepAlarmViewModel.swift */,
+			);
+			path = SleepAlarm;
+			sourceTree = "<group>";
+		};
+		56F7D3B82464366C0096C1D6 /* Rows */ = {
+			isa = PBXGroup;
+			children = (
+				56B236EC24643B74008746CB /* BasicTableViewCell.swift */,
+				56F7D3B9246436810096C1D6 /* Row.swift */,
+			);
+			path = Rows;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,9 +249,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56F7D39324630DD80096C1D6 /* ViewController.swift in Sources */,
 				56F7D38F24630DD80096C1D6 /* AppDelegate.swift in Sources */,
 				56F7D39124630DD80096C1D6 /* SceneDelegate.swift in Sources */,
+				56B236ED24643B74008746CB /* BasicTableViewCell.swift in Sources */,
+				56F7D3B7246435420096C1D6 /* SleepAlarmViewModel.swift in Sources */,
+				56F7D3BA246436810096C1D6 /* Row.swift in Sources */,
+				56F7D3B5246434B30096C1D6 /* SleepAlarmViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
