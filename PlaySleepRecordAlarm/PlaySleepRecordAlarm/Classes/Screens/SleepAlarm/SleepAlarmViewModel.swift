@@ -81,9 +81,13 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private var shouldPresentAlarmTimePickerHandler: ((_ currentAlarmTime: Date) -> Void)?
     private var shouldReloadPlaybackViewHandler: (() -> Void)?
     
+    private let audioPlayerController: AudioPlayerControllable
+    
     // MARK:- Initalization
     
-    init() {
+    init(audioPlayerController: AudioPlayerControllable) {
+        self.audioPlayerController = audioPlayerController
+        
         state = State.idle
         didChangeState()
     }
