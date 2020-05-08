@@ -40,7 +40,7 @@ enum SleepTimer: CustomStringConvertible {
         case .minutes(let minutes):
             return String(minutes) + " " + "min"
         case .seconds(let seconds):
-            return String(format: "%.0f", seconds) + " " + "sec"
+            return String(format: "%.0f sec", seconds)
         }
     }
     
