@@ -29,4 +29,8 @@ extension Date {
     var shortTimeString: String {
         return string(with: .timeShortFormatter)
     }
+    
+    var compactString: String {
+        return string(with: .compactFormatter)
+    }
 }

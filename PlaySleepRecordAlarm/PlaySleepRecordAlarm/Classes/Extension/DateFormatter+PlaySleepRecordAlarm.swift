@@ -9,11 +9,18 @@
 import Foundation
 
 extension DateFormatter {
-    static var timeShortFormatter: DateFormatter {
+    static let timeShortFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .none
         formatter.timeStyle = .short
         
         return formatter
-    }
+    }()
+    
+    static let compactFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy_HH-mm-ss"
+        
+        return formatter
+    }()
 }

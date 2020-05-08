@@ -24,18 +24,23 @@ protocol SleepAlarmViewModel {
     
     func play()
     func pause()
+    
+    func requestPermissions()
 }
 
 enum SleepTimer: CustomStringConvertible {
     case off
-    case duration(minutes: UInt)
+    case minutes(_ minutes: UInt)
+    case seconds(_ seconds: TimeInterval)
     
     var description: String {
         switch self {
         case .off:
             return NSLocalizedString("off", comment: "off")
-        case .duration(let minutes):
+        case .minutes(let minutes):
             return String(minutes) + " " + "min"
+        case .seconds(let seconds):
+            return String(format: "%.0f", seconds) + " " + "sec"
         }
     }
     
@@ -43,8 +48,10 @@ enum SleepTimer: CustomStringConvertible {
         switch self {
         case .off:
             return 0
-        case .duration(let minutes):
+        case .minutes(let minutes):
             return TimeInterval(minutes * 60)
+        case .seconds(let seconds):
+            return seconds
         }
     }
 }
@@ -75,15 +82,16 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         }
     }
     
-    private var sleepTimer: SleepTimer = .duration(minutes: 20)
+    private var sleepTimer: SleepTimer = .minutes(20)
     private var alarmTime = Date.fromComponents(hour: 8, minute: 30)!
     
     private var sleepTimerOptions: [SleepTimer] = [.off,
-                                                   .duration(minutes: 1),
-                                                   .duration(minutes: 5),
-                                                   .duration(minutes: 10),
-                                                   .duration(minutes: 15),
-                                                   .duration(minutes: 20)]
+                                                   .seconds(10),
+                                                   .minutes(1),
+                                                   .minutes(5),
+                                                   .minutes(10),
+                                                   .minutes(15),
+                                                   .minutes(20)]
     
     private var shouldPresentSleepTimerOptionsHandler: ((_ options: [SleepTimer]) -> Void)?
     private var shouldReloadSleepAlarmViewHandler: (() -> Void)?
@@ -91,13 +99,17 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private var shouldReloadPlaybackViewHandler: (() -> Void)?
     
     private let audioPlayerController: AudioPlayerControllable
+    private let audioRecorderController: AudioRecorderControllable
     
     private var sleepSoundStopTimer: Timer?
     
+    private var allPermissionsGranted: Bool = false
+    
     // MARK:- Initalization
     
-    init(audioPlayerController: AudioPlayerControllable) {
+    init(audioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable) {
         self.audioPlayerController = audioPlayerController
+        self.audioRecorderController = audioRecorderController
         
         state = State.idle
         didChangeState()
@@ -120,7 +132,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             cell.textLabel?.text = NSLocalizedString("Alarm", comment: "Alarm")
             cell.detailTextLabel?.text = self.alarmTime.shortTimeString
             
-            // TODO: change font color based while interactions are disabled
+            // TODO: change font color while interactions are disabled for better UX
             cell.isUserInteractionEnabled = (self.state == .idle) ? true : false
         }, selection: { [unowned self] _ in
             self.shouldPresentAlarmTimePickerHandler?(self.alarmTime)
@@ -180,9 +192,21 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         didChangeSleepAlarmRelatedData()
     }
     
+    // MARK:- Permissions
+    
+    func requestPermissions() {
+        audioRecorderController.requestPermission { [unowned self] allowed in
+            self.allPermissionsGranted = allowed
+        }
+    }
+    
     // MARK:- States
     
     func play() {
+        guard allPermissionsGranted else {
+            return
+        }
+        
         guard isRunnning == false else {
             return
         }
@@ -232,6 +256,9 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             }
             
         case .recording:
+            prepareRecording()
+            resumeCurrentState()
+            reloadSleepAlarmView()
             break
             
         case .alarm:
@@ -248,7 +275,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             playSound()
             
         case .recording:
-            break
+            starRecording()
             
         case .alarm:
             break
@@ -266,7 +293,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             pauseSound()
             
         case .recording:
-            break
+            pauseRecording()
             
         case .alarm:
             break
@@ -339,5 +366,23 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private func invalidateSoundStopTimer() {
         sleepSoundStopTimer?.invalidate()
         sleepSoundStopTimer = nil
+    }
+    
+    // MARK:- Recording audio
+    
+    private func prepareRecording() {
+        audioRecorderController.prepare(nil)
+    }
+    
+    private func starRecording() {
+        audioRecorderController.record(nil)
+    }
+    
+    private func pauseRecording() {
+        audioRecorderController.pause()
+    }
+    
+    private func stopRecording() {
+        audioRecorderController.stop()
     }
 }
