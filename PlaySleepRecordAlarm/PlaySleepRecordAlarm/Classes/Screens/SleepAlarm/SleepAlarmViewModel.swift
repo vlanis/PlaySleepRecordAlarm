@@ -38,6 +38,15 @@ enum SleepTimer: CustomStringConvertible {
             return String(minutes) + " " + "min"
         }
     }
+    
+    var seconds: TimeInterval {
+        switch self {
+        case .off:
+            return 0
+        case .duration(let minutes):
+            return TimeInterval(minutes * 60)
+        }
+    }
 }
 
 final class SleepAlarmViewModelImp: SleepAlarmViewModel {
@@ -82,6 +91,8 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private var shouldReloadPlaybackViewHandler: (() -> Void)?
     
     private let audioPlayerController: AudioPlayerControllable
+    
+    private var sleepSoundStopTimer: Timer?
     
     // MARK:- Initalization
     
@@ -210,12 +221,15 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         case .idle:
             isRunnning = false
             reloadSleepAlarmView()
-            break
             
         case .playing:
-            isRunnning = true
-            reloadSleepAlarmView()
-            break
+            switch sleepTimer {
+            case .off:
+                advanceState()
+            default:
+                resumeCurrentState()
+                reloadSleepAlarmView()
+            }
             
         case .recording:
             break
@@ -226,10 +240,38 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     }
     
     private func resumeCurrentState() {
+        switch state {
+        case .idle:
+            break
+            
+        case .playing:
+            playSound()
+            
+        case .recording:
+            break
+            
+        case .alarm:
+            break
+        }
+        
         isRunnning = true
     }
     
     private func suspendCurrentState() {
+        switch state {
+        case .idle:
+            break
+            
+        case .playing:
+            pauseSound()
+            
+        case .recording:
+            break
+            
+        case .alarm:
+            break
+        }
+        
         isRunnning = false
     }
     
@@ -251,5 +293,51 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     private func reloadPlaybackView() {
         shouldReloadPlaybackViewHandler?()
+    }
+    
+    // MARK:- Playing sounds
+    
+    private func playSound() {
+        guard state == .playing && audioPlayerController.isPlaying == false else {
+            return
+        }
+        
+        audioPlayerController.play()
+        scheduleSoundStopTimer()
+    }
+    
+    private func pauseSound() {
+        guard state == .playing && audioPlayerController.isPlaying else {
+            return
+        }
+        
+        audioPlayerController.pause()
+        invalidateSoundStopTimer()
+    }
+    
+    private func stopSound() {
+        guard state == .playing else {
+            return
+        }
+        
+        audioPlayerController.stop()
+        invalidateSoundStopTimer()
+    }
+    
+    private func finishSoundPlayback() {
+        invalidateSoundStopTimer()
+        stopSound()
+        advanceState()
+    }
+    
+    private func scheduleSoundStopTimer() {
+        sleepSoundStopTimer = Timer.scheduledTimer(withTimeInterval: sleepTimer.seconds, repeats: false, block: { [weak self] _ in
+            self?.finishSoundPlayback()
+        })
+    }
+    
+    private func invalidateSoundStopTimer() {
+        sleepSoundStopTimer?.invalidate()
+        sleepSoundStopTimer = nil
     }
 }

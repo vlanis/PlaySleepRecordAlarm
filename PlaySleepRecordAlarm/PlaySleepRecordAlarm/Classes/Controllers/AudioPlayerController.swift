@@ -29,8 +29,8 @@ final class AudioPlayerController: AudioPlayerControllable {
     
     // MARK:- Initialization
     
-    init?(audioFileNamed: String, loop: Bool = false) {
-        guard let fileURL = Bundle.main.url(forResource: audioFileNamed, withExtension: "m4a") else {
+    init?(audioFileNamed: String, fileExtension: String?, loop: Bool = false) {
+        guard let fileURL = Bundle.main.url(forResource: audioFileNamed, withExtension: fileExtension) else {
             return nil
         }
         
@@ -45,6 +45,7 @@ final class AudioPlayerController: AudioPlayerControllable {
     // MARK:- Playback
     
     func play() {
+        try? AVAudioSession.sharedInstance().setActive(true)
         audioPlayer.play()
     }
     
@@ -54,5 +55,6 @@ final class AudioPlayerController: AudioPlayerControllable {
     
     func stop() {
         audioPlayer.stop()
+        try? AVAudioSession.sharedInstance().setActive(false)
     }
 }

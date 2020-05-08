@@ -7,12 +7,22 @@
 //
 
 import UIKit
+import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    // MARK:- Services
+    
+    private func configureServices() {
+        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+    }
+    
+    // MARK:- Application lifecycle
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        configureServices()
+        
         return true
     }
 
