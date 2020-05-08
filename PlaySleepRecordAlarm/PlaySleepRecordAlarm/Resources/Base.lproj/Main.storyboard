@@ -90,5 +90,57 @@
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="119.86607142857142"/>
         </scene>
+        <!--Time Picker View Controller-->
+        <scene sceneID="xed-vM-Qgi">
+            <objects>
+                <viewController storyboardIdentifier="TimePickerViewControllerIdentifier" id="QRG-en-Oyu" customClass="TimePickerViewController" customModule="PlaySleepRecordAlarm" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bJj-hA-EfB">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="eYX-19-gGI">
+                                <rect key="frame" x="0.0" y="646" width="414" height="216"/>
+                            </datePicker>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FNy-Sz-Vau">
+                                <rect key="frame" x="0.0" y="602" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="VWz-H2-YBA"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem title="Cancel" id="P9P-ya-gA3">
+                                        <connections>
+                                            <action selector="cancelButtonPressed" destination="QRG-en-Oyu" id="qac-Qh-FnD"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="cWo-Yf-ICp"/>
+                                    <barButtonItem title="Done" id="MB3-U9-BRS">
+                                        <connections>
+                                            <action selector="doneButtonPressed" destination="QRG-en-Oyu" id="io9-QV-RVF"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="icf-Wv-M8s" firstAttribute="bottom" secondItem="eYX-19-gGI" secondAttribute="bottom" id="Dok-Rg-lEc"/>
+                            <constraint firstItem="eYX-19-gGI" firstAttribute="trailing" secondItem="icf-Wv-M8s" secondAttribute="trailing" id="TNK-eX-HaW"/>
+                            <constraint firstItem="eYX-19-gGI" firstAttribute="top" secondItem="FNy-Sz-Vau" secondAttribute="bottom" symbolic="YES" id="kgb-Hw-EDn"/>
+                            <constraint firstItem="eYX-19-gGI" firstAttribute="trailing" secondItem="FNy-Sz-Vau" secondAttribute="trailing" id="mzf-tx-X6I"/>
+                            <constraint firstItem="eYX-19-gGI" firstAttribute="leading" secondItem="FNy-Sz-Vau" secondAttribute="leading" id="we5-1w-uT7"/>
+                            <constraint firstItem="eYX-19-gGI" firstAttribute="leading" secondItem="icf-Wv-M8s" secondAttribute="leading" id="xBu-xe-FLx"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="icf-Wv-M8s"/>
+                    </view>
+                    <connections>
+                        <outlet property="datePicker" destination="eYX-19-gGI" id="9MA-sw-LPF"/>
+                        <outlet property="toolbar" destination="FNy-Sz-Vau" id="fBV-zR-x2j"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MCk-Sf-Ibj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1510" y="120"/>
+        </scene>
     </scenes>
 </document>

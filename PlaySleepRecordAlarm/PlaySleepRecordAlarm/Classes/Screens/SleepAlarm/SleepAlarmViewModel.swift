@@ -15,6 +15,9 @@ protocol SleepAlarmViewModel {
     func didSelectSleepTimerOption(_ sleepTimer: SleepTimer)
     
     func shouldReloadSleepAlarmView(_ handler: (() -> Void)?)
+    
+    func shouldPresentAlarmTimePicker(_ handler: ((_ currentAlarmTime: Date) -> Void)?)
+    func didSelectAlarmTime(_ alarmTime: Date)
 }
 
 enum SleepTimer: CustomStringConvertible {
@@ -59,6 +62,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     private var shouldPresentSleepTimerOptionsHandler: ((_ options: [SleepTimer]) -> Void)?
     private var shouldReloadSleepAlarmViewHandler: (() -> Void)?
+    private var shouldPresentAlarmTimePickerHandler: ((_ currentAlarmTime: Date) -> Void)?
     
     // MARK:- Initalization
     
@@ -79,8 +83,8 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         let alarmRow = Row<BasicTableViewCell>(configure: { [unowned self] cell, _ in
             cell.textLabel?.text = NSLocalizedString("Alarm", comment: "Alarm")
             cell.detailTextLabel?.text = self.alarmTime.shortTimeString
-        }, selection: { _ in
-            
+        }, selection: { [unowned self] _ in
+            self.shouldPresentAlarmTimePickerHandler?(self.alarmTime)
         }, isEnabled: true)
         
         rows = [sleepTimerRow, alarmRow]
@@ -96,6 +100,10 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         shouldReloadSleepAlarmViewHandler = handler
     }
     
+    func shouldPresentAlarmTimePicker(_ handler: ((_ currentAlarmTime: Date) -> Void)?) {
+        shouldPresentAlarmTimePickerHandler = handler
+    }
+    
     // MARK:- Events
     
     private func didChangeSleepAlarmRelatedData() {
@@ -107,6 +115,13 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     func didSelectSleepTimerOption(_ sleepTimer: SleepTimer) {
         self.sleepTimer = sleepTimer
+        didChangeSleepAlarmRelatedData()
+    }
+    
+    // MARK:- Alarm Time
+    
+    func didSelectAlarmTime(_ alarmTime: Date) {
+        self.alarmTime = alarmTime
         didChangeSleepAlarmRelatedData()
     }
 }

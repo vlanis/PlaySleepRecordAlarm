@@ -16,6 +16,7 @@ final class SleepAlarmViewController: UIViewController {
         willSet {
             viewModel?.shouldPresentSleepTimerOptions(nil)
             viewModel?.shouldReloadSleepAlarmView(nil)
+            viewModel?.shouldPresentAlarmTimePicker(nil)
         }
         
         didSet {
@@ -25,6 +26,10 @@ final class SleepAlarmViewController: UIViewController {
             
             viewModel?.shouldReloadSleepAlarmView { [weak self] in
                 self?.reloadSleepAlarmList()
+            }
+            
+            viewModel?.shouldPresentAlarmTimePicker { [weak self] alarmTime in
+                self?.presentTimePicker(time: alarmTime)
             }
         }
     }
@@ -66,7 +71,13 @@ final class SleepAlarmViewController: UIViewController {
         viewModel.didSelectSleepTimerOption(sleepTimer)
     }
     
+    func didSelectAlarmTime(_ alarmTime: Date) {
+        viewModel.didSelectAlarmTime(alarmTime)
+    }
+    
     // MARK:- Presentation
+    
+    // TODO: all presentation from this section should be moved to a Presenter
     
     func presentSleepTimerOptions(_ options: [SleepTimer]) {
         let actionSheet = UIAlertController(title: NSLocalizedString("Sleep Timer", comment: "Sleep Timer"), message: nil, preferredStyle: .actionSheet)
@@ -81,6 +92,24 @@ final class SleepAlarmViewController: UIViewController {
         actionSheet.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel))
         
         present(actionSheet, animated: true)
+    }
+    
+    func presentTimePicker(time: Date) {
+        let timePickerViewController = UIStoryboard.main.instantiateViewController(withIdentifier: TimePickerViewController.storyboardIdentifier) as! TimePickerViewController
+        
+        timePickerViewController.modalPresentationStyle = .custom
+        timePickerViewController.transitioningDelegate = ContentSizeModalPresentationTransitioningDelegate.default
+        
+        timePickerViewController.didFinish { [unowned self, timePickerViewController] time in
+            self.didSelectAlarmTime(time)
+            timePickerViewController.dismiss(animated: true)
+        }
+        
+        timePickerViewController.didCancel { [unowned timePickerViewController] in
+            timePickerViewController.dismiss(animated: true)
+        }
+        
+        present(timePickerViewController, animated: true)
     }
 }
 
