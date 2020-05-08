@@ -17,6 +17,7 @@ final class SleepAlarmViewController: UIViewController {
             viewModel?.shouldPresentSleepTimerOptions(nil)
             viewModel?.shouldReloadSleepAlarmView(nil)
             viewModel?.shouldPresentAlarmTimePicker(nil)
+            viewModel?.shouldReloadPlaybackView(nil)
         }
         
         didSet {
@@ -30,6 +31,10 @@ final class SleepAlarmViewController: UIViewController {
             
             viewModel?.shouldPresentAlarmTimePicker { [weak self] alarmTime in
                 self?.presentTimePicker(time: alarmTime)
+            }
+            
+            viewModel?.shouldReloadPlaybackView { [weak self] in
+                self?.reloadPlaybackView()
             }
         }
     }
@@ -57,12 +62,28 @@ final class SleepAlarmViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reloadSleepAlarmList()
+        reloadPlaybackView()
     }
     
     // MARK:- UI
     
     func reloadSleepAlarmList() {
         tableView.reloadData()
+    }
+    
+    func reloadPlaybackView() {
+        playButton.isHidden = viewModel.isRunnning ? true : false
+        pauseButton.isHidden = !playButton.isHidden
+    }
+    
+    // MARK:- Actions
+    
+    @IBAction func playButtonPressed() {
+        viewModel.play()
+    }
+    
+    @IBAction func pauseButtonPressed() {
+        viewModel.pause()
     }
     
     // MARK:- Events

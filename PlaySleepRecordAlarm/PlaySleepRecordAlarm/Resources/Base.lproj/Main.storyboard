@@ -56,6 +56,9 @@
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2LU-Tf-R9k">
                                 <rect key="frame" x="15" y="810" width="384" height="44"/>
                                 <state key="normal" title="Pause"/>
+                                <connections>
+                                    <action selector="pauseButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="9el-CD-ikG"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Dz-f0-10R">
                                 <rect key="frame" x="15" y="810" width="384" height="44"/>
@@ -63,6 +66,9 @@
                                     <constraint firstAttribute="height" constant="44" id="fel-IG-ll9"/>
                                 </constraints>
                                 <state key="normal" title="Play"/>
+                                <connections>
+                                    <action selector="playButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="xkU-Pi-lnH"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
