@@ -16,6 +16,7 @@
 		5659256B24657CD50031373B /* AudioPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659256A24657CD50031373B /* AudioPlayerController.swift */; };
 		5659256E24657DC20031373B /* nature.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5659256D24657DB50031373B /* nature.m4a */; };
 		565925702465987D0031373B /* AudioRecorderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659256F2465987D0031373B /* AudioRecorderController.swift */; };
+		565925722465C3760031373B /* LocalNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565925712465C3760031373B /* LocalNotificationController.swift */; };
 		56B236ED24643B74008746CB /* BasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B236EC24643B74008746CB /* BasicTableViewCell.swift */; };
 		56F7D38F24630DD80096C1D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D38E24630DD80096C1D6 /* AppDelegate.swift */; };
 		56F7D39124630DD80096C1D6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D39024630DD80096C1D6 /* SceneDelegate.swift */; };
@@ -48,6 +49,7 @@
 		5659256A24657CD50031373B /* AudioPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerController.swift; sourceTree = "<group>"; };
 		5659256D24657DB50031373B /* nature.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = nature.m4a; sourceTree = "<group>"; };
 		5659256F2465987D0031373B /* AudioRecorderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderController.swift; sourceTree = "<group>"; };
+		565925712465C3760031373B /* LocalNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationController.swift; sourceTree = "<group>"; };
 		56B236EC24643B74008746CB /* BasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTableViewCell.swift; sourceTree = "<group>"; };
 		56F7D38B24630DD80096C1D6 /* PlaySleepRecordAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaySleepRecordAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F7D38E24630DD80096C1D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			children = (
 				5659256A24657CD50031373B /* AudioPlayerController.swift */,
 				5659256F2465987D0031373B /* AudioRecorderController.swift */,
+				565925712465C3760031373B /* LocalNotificationController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				565925702465987D0031373B /* AudioRecorderController.swift in Sources */,
 				5659255F246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift in Sources */,
 				56592562246480FE0031373B /* TimePickerViewController.swift in Sources */,
+				565925722465C3760031373B /* LocalNotificationController.swift in Sources */,
 				565925662465539A0031373B /* ContentSizeModalPresentationTransitioningDelegate.swift in Sources */,
 				5659256B24657CD50031373B /* AudioPlayerController.swift in Sources */,
 				56F7D3B7246435420096C1D6 /* SleepAlarmViewModel.swift in Sources */,

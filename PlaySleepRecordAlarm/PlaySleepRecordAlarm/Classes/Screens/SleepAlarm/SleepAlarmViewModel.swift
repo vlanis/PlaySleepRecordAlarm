@@ -100,16 +100,18 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     private let audioPlayerController: AudioPlayerControllable
     private let audioRecorderController: AudioRecorderControllable
+    private let localNotificationController: LocalNotificationControllable
     
     private var sleepSoundStopTimer: Timer?
     
-    private var allPermissionsGranted: Bool = false
+    private var allPermissionsGranted: Bool = true
     
     // MARK:- Initalization
     
-    init(audioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable) {
+    init(audioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable, localNotificationController: LocalNotificationControllable) {
         self.audioPlayerController = audioPlayerController
         self.audioRecorderController = audioRecorderController
+        self.localNotificationController = localNotificationController
         
         state = State.idle
         didChangeState()
@@ -196,7 +198,11 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     func requestPermissions() {
         audioRecorderController.requestPermission { [unowned self] allowed in
-            self.allPermissionsGranted = allowed
+            self.allPermissionsGranted = self.allPermissionsGranted || allowed
+        }
+        
+        localNotificationController.requestPermission { [unowned self] allowed in
+            self.allPermissionsGranted = self.allPermissionsGranted || allowed
         }
     }
     

@@ -54,7 +54,7 @@ final class SleepAlarmViewController: UIViewController {
         super.awakeFromNib()
         
         // TODO: move assembling to a Presenter/Builder
-        viewModel = SleepAlarmViewModelImp(audioPlayerController: AudioPlayerController(audioFileNamed: "nature", fileExtension: "m4a", loop: true)!, audioRecorderController: AudioRecorderController())
+        viewModel = SleepAlarmViewModelImp(audioPlayerController: AudioPlayerController(audioFileNamed: "nature", fileExtension: "m4a", loop: true)!, audioRecorderController: AudioRecorderController(), localNotificationController: LocalNotificationController())
     }
     
     override func viewDidLoad() {
