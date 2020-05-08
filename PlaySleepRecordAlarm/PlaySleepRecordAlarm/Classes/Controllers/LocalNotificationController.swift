@@ -13,9 +13,16 @@ protocol LocalNotificationControllable {
     func requestPermission(_ completion: @escaping (_ allowed: Bool) -> Void)
     func scheduleNotification(title: String?, message: String?, time: Date, completion: ((_ identifier: String?, _ error: Error?) -> Void)?)
     func cancelNotification(identifier: String)
+    func didReceiveNotification(_ handler: ((_ notification: UNNotification) -> Void)?)
+    func didReceiveNotificationAction(_ handler: ((_ notification: UNNotification) -> Void)?)
 }
 
 final class LocalNotificationController: NSObject, LocalNotificationControllable, UNUserNotificationCenterDelegate {
+    
+    // MARK:- Properties
+    
+    private var didReceiveNotificationHandler: ((_ notification: UNNotification) -> Void)?
+    private var didReceiveNotificationActionHandler: ((_ notification: UNNotification) -> Void)?
     
     // MARK:- Initialization
     
@@ -24,7 +31,7 @@ final class LocalNotificationController: NSObject, LocalNotificationControllable
         UNUserNotificationCenter.current().delegate = self
     }
     
-    // MARK:- Persmission
+    // MARK:- Permission
     
     func requestPermission(_ completion: @escaping (_ allowed: Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .alert]) { granted, error in
@@ -64,18 +71,27 @@ final class LocalNotificationController: NSObject, LocalNotificationControllable
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
     }
     
+    func didReceiveNotification(_ handler: ((_ notification: UNNotification) -> Void)?) {
+        didReceiveNotificationHandler = handler
+    }
+    
+    func didReceiveNotificationAction(_ handler: ((_ notification: UNNotification) -> Void)?) {
+        didReceiveNotificationActionHandler = handler
+    }
+    
     // MARK:- UNUserNotificationCenterDelegate
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        completionHandler([.sound, .alert])
+        completionHandler([.sound])
+        didReceiveNotificationHandler?(notification)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
         switch response.actionIdentifier {
-            case UNNotificationDefaultActionIdentifier,
-                 UNNotificationDismissActionIdentifier:
+            case UNNotificationDefaultActionIdentifier, UNNotificationDismissActionIdentifier:
+                didReceiveNotificationActionHandler?(response.notification)
                 break
             
             default:

@@ -22,6 +22,8 @@ protocol SleepAlarmViewModel {
     func shouldPresentAlarmTimePicker(_ handler: ((_ currentAlarmTime: Date) -> Void)?)
     func didSelectAlarmTime(_ alarmTime: Date)
     
+    func shouldPresentAlarmView(_ handler: ((_ message: String?, _ completion: @escaping () -> Void) -> Void)?)
+    
     func play()
     func pause()
     
@@ -97,6 +99,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private var shouldReloadSleepAlarmViewHandler: (() -> Void)?
     private var shouldPresentAlarmTimePickerHandler: ((_ currentAlarmTime: Date) -> Void)?
     private var shouldReloadPlaybackViewHandler: (() -> Void)?
+    private var shouldPresentAlarmViewHandler: ((_ message: String?, _ completion: @escaping () -> Void) -> Void)?
     
     private let audioPlayerController: AudioPlayerControllable
     private let audioRecorderController: AudioRecorderControllable
@@ -115,6 +118,14 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         
         state = State.idle
         didChangeState()
+        
+        self.localNotificationController.didReceiveNotification { [weak self] _ in
+            self?.didReceiveAlarmNotification()
+        }
+        
+        self.localNotificationController.didReceiveNotificationAction() { [weak self] _ in
+            self?.didReceiveAlarmNotification()
+        }
     }
     
     // MARK:- Rows
@@ -166,6 +177,10 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         shouldReloadPlaybackViewHandler = handler
     }
     
+    func shouldPresentAlarmView(_ handler: ((_ message: String?, _ completion: @escaping () -> Void) -> Void)?) {
+        shouldPresentAlarmViewHandler = handler
+    }
+    
     // MARK:- Events
     
     private func didChangeSleepAlarmRelatedData() {
@@ -178,6 +193,10 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     private func didChangePlaybackState() {
         reloadPlaybackView()
+    }
+    
+    private func didReceiveAlarmNotification() {
+        proceedToAlarmState()
     }
     
     // MARK:- Sleep Timer
@@ -246,6 +265,14 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         }
     }
     
+    private func resetState() {
+        state = .idle
+    }
+    
+    private func proceedToAlarmState() {
+        state = .alarm
+    }
+    
     private func configureAsPerCurrentState() {
         switch state {
         case .idle:
@@ -268,6 +295,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             break
             
         case .alarm:
+            presentAlarmView()
             break
         }
     }
@@ -397,5 +425,11 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     private func scheduleAlarmNotification() {
         localNotificationController.scheduleNotification(title: NSLocalizedString("Alarm went off", comment: "Alarm went off"), message: nil, time: alarmTime, completion: nil)
+    }
+    
+    private func presentAlarmView() {
+        shouldPresentAlarmViewHandler?(NSLocalizedString("Alarm went off", comment: "Alarm went off"), { [weak self] in
+            self?.resetState()
+        })
     }
 }

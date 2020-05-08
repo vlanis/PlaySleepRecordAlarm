@@ -18,6 +18,7 @@ final class SleepAlarmViewController: UIViewController {
             viewModel?.shouldReloadSleepAlarmView(nil)
             viewModel?.shouldPresentAlarmTimePicker(nil)
             viewModel?.shouldReloadPlaybackView(nil)
+            viewModel?.shouldPresentAlarmView(nil)
         }
         
         didSet {
@@ -35,6 +36,10 @@ final class SleepAlarmViewController: UIViewController {
             
             viewModel?.shouldReloadPlaybackView { [weak self] in
                 self?.reloadPlaybackView()
+            }
+            
+            viewModel?.shouldPresentAlarmView { [weak self] message, completion in
+                self?.presentAlert(message: message, completion: completion)
             }
         }
     }
@@ -133,7 +138,16 @@ final class SleepAlarmViewController: UIViewController {
             timePickerViewController.dismiss(animated: true)
         }
         
+        timePickerViewController.initialDate = time
+        
         present(timePickerViewController, animated: true)
+    }
+    
+    func presentAlert(message: String?, completion: (() -> Void)?) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Stop", comment: "Stop"), style: .default, handler: {_ in completion?()}))
+        
+        present(alert, animated: true)
     }
 }
 
