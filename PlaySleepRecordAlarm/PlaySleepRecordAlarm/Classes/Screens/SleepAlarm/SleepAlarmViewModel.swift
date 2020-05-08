@@ -311,6 +311,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private func advanceState() {
         switch state {
         case .idle:
+            scheduleAlarmNotification()
             state = .playing
             
         case .playing:
@@ -390,5 +391,11 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     private func stopRecording() {
         audioRecorderController.stop()
+    }
+    
+    // MARK:- Alarm
+    
+    private func scheduleAlarmNotification() {
+        localNotificationController.scheduleNotification(title: NSLocalizedString("Alarm went off", comment: "Alarm went off"), message: nil, time: alarmTime, completion: nil)
     }
 }

@@ -34,3 +34,17 @@ extension Date {
         return string(with: .compactFormatter)
     }
 }
+
+extension Date {
+    func component(_ comp: Calendar.Component, in calendar: Calendar = .current) -> Int {
+        return calendar.component(comp, from: self)
+    }
+    
+    var hour: Int {
+        return component(.hour)
+    }
+    
+    var minute: Int {
+        return component(.minute)
+    }
+}
