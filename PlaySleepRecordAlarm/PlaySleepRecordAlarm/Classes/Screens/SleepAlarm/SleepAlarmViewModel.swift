@@ -236,11 +236,11 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     func requestPermissions() {
         audioRecorderController.requestPermission { [unowned self] allowed in
-            self.allPermissionsGranted = self.allPermissionsGranted || allowed
+            self.allPermissionsGranted = self.allPermissionsGranted && allowed
         }
         
         localNotificationController.requestPermission { [unowned self] allowed in
-            self.allPermissionsGranted = self.allPermissionsGranted || allowed
+            self.allPermissionsGranted = self.allPermissionsGranted && allowed
         }
     }
     
