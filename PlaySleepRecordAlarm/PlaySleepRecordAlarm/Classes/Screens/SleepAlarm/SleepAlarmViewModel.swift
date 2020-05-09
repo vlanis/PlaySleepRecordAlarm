@@ -89,6 +89,10 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     }
     
     private var state: State {
+        willSet {
+            willChangeState()
+        }
+        
         didSet {
             didChangeState()
         }
@@ -115,8 +119,10 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private let audioPlayerController: AudioPlayerControllable
     private let audioRecorderController: AudioRecorderControllable
     private let localNotificationController: LocalNotificationControllable
+    private let alarmAudioPlayerController: AudioPlayerControllable
     
     private var sleepSoundStopTimer: Timer?
+    private var alarmStateTriggerTimer: Timer?
     
     private var allPermissionsGranted: Bool = true
     
@@ -125,10 +131,11 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     // MARK:- Initalization
     
-    init(audioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable, localNotificationController: LocalNotificationControllable) {
+    init(audioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable, localNotificationController: LocalNotificationControllable, alarmAudioPlayerController: AudioPlayerControllable) {
         self.audioPlayerController = audioPlayerController
         self.audioRecorderController = audioRecorderController
         self.localNotificationController = localNotificationController
+        self.alarmAudioPlayerController = alarmAudioPlayerController
         
         state = State.idle
         didChangeState()
@@ -299,6 +306,24 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         state = .alarm
     }
     
+    private func clearCurrentState() {
+        switch state {
+        case .idle:
+            break
+            
+        case .playing:
+            stopSleepSound()
+            invalidateSleepSoundStopTimer()
+            
+        case .recording:
+            stopRecording()
+            
+        case .alarm:
+            stopAlarmSound()
+            invalidateAlarmStateTriggerTimer()
+        }
+    }
+    
     private func configureAsPerCurrentState() {
         switch state {
         case .idle:
@@ -318,12 +343,15 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             prepareRecording()
             resumeCurrentState()
             reloadSleepAlarmView()
-            break
             
         case .alarm:
+            isRunnning = true
             presentAlarmView()
-            break
+            invalidateAlarmStateTriggerTimer()
+            playAlarmSound()
         }
+        
+        updateStateView()
     }
     
     private func resumeCurrentState() {
@@ -332,7 +360,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             break
             
         case .playing:
-            playSound()
+            playSleepSound()
             
         case .recording:
             starRecording()
@@ -350,7 +378,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             break
             
         case .playing:
-            pauseSound()
+            pauseSleepSound()
             
         case .recording:
             pauseRecording()
@@ -365,7 +393,8 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private func advanceState() {
         switch state {
         case .idle:
-            scheduleAlarmNotification()
+            scheduleAlarmLocalNotification()
+            scheduleAlarmStateTriggerTimer()
             state = .playing
             
         case .playing:
@@ -383,48 +412,48 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         shouldReloadPlaybackViewHandler?()
     }
     
-    // MARK:- Playing sounds
+    // MARK:- Playing sleep sounds
     
-    private func playSound() {
+    private func playSleepSound() {
         guard state == .playing && audioPlayerController.isPlaying == false else {
             return
         }
         
         audioPlayerController.play()
-        scheduleSoundStopTimer()
+        scheduleSleepSoundStopTimer()
     }
     
-    private func pauseSound() {
+    private func pauseSleepSound() {
         guard state == .playing && audioPlayerController.isPlaying else {
             return
         }
         
         audioPlayerController.pause()
-        invalidateSoundStopTimer()
+        invalidateSleepSoundStopTimer()
     }
     
-    private func stopSound() {
+    private func stopSleepSound() {
         guard state == .playing else {
             return
         }
         
         audioPlayerController.stop()
-        invalidateSoundStopTimer()
+        invalidateSleepSoundStopTimer()
     }
     
-    private func finishSoundPlayback() {
-        invalidateSoundStopTimer()
-        stopSound()
+    private func finishSleepSoundPlayback() {
+        invalidateSleepSoundStopTimer()
+        stopSleepSound()
         advanceState()
     }
     
-    private func scheduleSoundStopTimer() {
+    private func scheduleSleepSoundStopTimer() {
         sleepSoundStopTimer = Timer.scheduledTimer(withTimeInterval: sleepTimer.seconds, repeats: false, block: { [weak self] _ in
-            self?.finishSoundPlayback()
+            self?.finishSleepSoundPlayback()
         })
     }
     
-    private func invalidateSoundStopTimer() {
+    private func invalidateSleepSoundStopTimer() {
         sleepSoundStopTimer?.invalidate()
         sleepSoundStopTimer = nil
     }
@@ -449,7 +478,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     // MARK:- Alarm
     
-    private func scheduleAlarmNotification() {
+    private func scheduleAlarmLocalNotification() {
         localNotificationController.scheduleNotification(title: NSLocalizedString("Alarm went off", comment: "Alarm went off"), message: nil, time: alarmTime, completion: nil)
     }
     
@@ -457,6 +486,49 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         shouldPresentAlarmViewHandler?(NSLocalizedString("Alarm went off", comment: "Alarm went off"), { [weak self] in
             self?.resetState()
         })
+    }
+    
+    private func scheduleAlarmStateTriggerTimer() {
+        let now = Date()
+        let nowComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: now)
+        
+        let alarmTimeComponents = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
+        
+        var alarmDateComponents = nowComponents
+        alarmDateComponents.hour = alarmTimeComponents.hour
+        alarmDateComponents.minute = alarmTimeComponents.minute
+        
+        if alarmTimeComponents.hour! < nowComponents.hour! {
+            alarmDateComponents.day! += 1
+        }
+        
+        if let alarmDate = Calendar.current.date(from: alarmDateComponents) {
+            let timerTimeInterval = abs(now.timeIntervalSince1970 - alarmDate.timeIntervalSince1970)
+            alarmStateTriggerTimer = Timer.scheduledTimer(withTimeInterval: timerTimeInterval, repeats: false, block: { [unowned self] _ in
+                self.proceedToAlarmState()
+            })
+        }
+    }
+    
+    private func invalidateAlarmStateTriggerTimer() {
+        alarmStateTriggerTimer?.invalidate()
+        alarmStateTriggerTimer = nil
+    }
+    
+    private func playAlarmSound() {
+        guard state == .alarm && alarmAudioPlayerController.isPlaying == false else {
+            return
+        }
+        
+        alarmAudioPlayerController.play()
+    }
+    
+    private func stopAlarmSound() {
+        guard state == .alarm else {
+            return
+        }
+        
+        alarmAudioPlayerController.stop()
     }
     
     // MARK:- Audio Session Interruption
