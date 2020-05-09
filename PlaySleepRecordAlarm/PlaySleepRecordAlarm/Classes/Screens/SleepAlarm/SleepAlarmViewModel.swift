@@ -133,10 +133,6 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         state = State.idle
         didChangeState()
         
-        self.localNotificationController.didReceiveNotification { [weak self] _ in
-            self?.didReceiveAlarmNotification()
-        }
-        
         self.localNotificationController.didReceiveNotificationAction() { [weak self] _ in
             self?.didReceiveAlarmNotification()
         }
