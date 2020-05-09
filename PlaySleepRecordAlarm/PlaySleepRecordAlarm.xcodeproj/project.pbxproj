@@ -18,13 +18,17 @@
 		565925722465C3760031373B /* LocalNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565925712465C3760031373B /* LocalNotificationController.swift */; };
 		565925742465C9060031373B /* alarm.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 565925732465C9060031373B /* alarm.m4a */; };
 		565925772466EC750031373B /* ApplicationNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565925762466EC750031373B /* ApplicationNavigator.swift */; };
+		56592579246744D80031373B /* SleepAlarmViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56592578246744D80031373B /* SleepAlarmViewModelTests.swift */; };
+		5659257C246745A90031373B /* AudioPlayerControllerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659257B246745A90031373B /* AudioPlayerControllerMock.swift */; };
+		5659257E246746350031373B /* AudioRecorderControllerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659257D246746350031373B /* AudioRecorderControllerMock.swift */; };
+		56592580246746E00031373B /* LocalNotificationControllerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659257F246746E00031373B /* LocalNotificationControllerMock.swift */; };
+		56592582246748780031373B /* SleepAlarmPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56592581246748780031373B /* SleepAlarmPresenterMock.swift */; };
 		56B236ED24643B74008746CB /* BasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B236EC24643B74008746CB /* BasicTableViewCell.swift */; };
 		56F7D38F24630DD80096C1D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D38E24630DD80096C1D6 /* AppDelegate.swift */; };
 		56F7D39124630DD80096C1D6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D39024630DD80096C1D6 /* SceneDelegate.swift */; };
 		56F7D39624630DD80096C1D6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56F7D39424630DD80096C1D6 /* Main.storyboard */; };
 		56F7D39824630DDC0096C1D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56F7D39724630DDC0096C1D6 /* Assets.xcassets */; };
 		56F7D39B24630DDC0096C1D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56F7D39924630DDC0096C1D6 /* LaunchScreen.storyboard */; };
-		56F7D3A624630DDC0096C1D6 /* PlaySleepRecordAlarmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D3A524630DDC0096C1D6 /* PlaySleepRecordAlarmTests.swift */; };
 		56F7D3B5246434B30096C1D6 /* SleepAlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D3B4246434B30096C1D6 /* SleepAlarmViewController.swift */; };
 		56F7D3B7246435420096C1D6 /* SleepAlarmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D3B6246435420096C1D6 /* SleepAlarmViewModel.swift */; };
 		56F7D3BA246436810096C1D6 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F7D3B9246436810096C1D6 /* Row.swift */; };
@@ -52,6 +56,11 @@
 		565925712465C3760031373B /* LocalNotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationController.swift; sourceTree = "<group>"; };
 		565925732465C9060031373B /* alarm.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = alarm.m4a; sourceTree = "<group>"; };
 		565925762466EC750031373B /* ApplicationNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationNavigator.swift; sourceTree = "<group>"; };
+		56592578246744D80031373B /* SleepAlarmViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepAlarmViewModelTests.swift; sourceTree = "<group>"; };
+		5659257B246745A90031373B /* AudioPlayerControllerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerControllerMock.swift; sourceTree = "<group>"; };
+		5659257D246746350031373B /* AudioRecorderControllerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderControllerMock.swift; sourceTree = "<group>"; };
+		5659257F246746E00031373B /* LocalNotificationControllerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationControllerMock.swift; sourceTree = "<group>"; };
+		56592581246748780031373B /* SleepAlarmPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepAlarmPresenterMock.swift; sourceTree = "<group>"; };
 		56B236EC24643B74008746CB /* BasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTableViewCell.swift; sourceTree = "<group>"; };
 		56F7D38B24630DD80096C1D6 /* PlaySleepRecordAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlaySleepRecordAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F7D38E24630DD80096C1D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -61,7 +70,6 @@
 		56F7D39A24630DDC0096C1D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56F7D39C24630DDC0096C1D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56F7D3A124630DDC0096C1D6 /* PlaySleepRecordAlarmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlaySleepRecordAlarmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		56F7D3A524630DDC0096C1D6 /* PlaySleepRecordAlarmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySleepRecordAlarmTests.swift; sourceTree = "<group>"; };
 		56F7D3A724630DDC0096C1D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56F7D3B4246434B30096C1D6 /* SleepAlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepAlarmViewController.swift; sourceTree = "<group>"; };
 		56F7D3B6246435420096C1D6 /* SleepAlarmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepAlarmViewModel.swift; sourceTree = "<group>"; };
@@ -132,6 +140,17 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
+		5659257A246745620031373B /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				5659257B246745A90031373B /* AudioPlayerControllerMock.swift */,
+				5659257D246746350031373B /* AudioRecorderControllerMock.swift */,
+				5659257F246746E00031373B /* LocalNotificationControllerMock.swift */,
+				56592581246748780031373B /* SleepAlarmPresenterMock.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		56F7D38224630DD70096C1D6 = {
 			isa = PBXGroup;
 			children = (
@@ -163,7 +182,8 @@
 		56F7D3A424630DDC0096C1D6 /* PlaySleepRecordAlarmTests */ = {
 			isa = PBXGroup;
 			children = (
-				56F7D3A524630DDC0096C1D6 /* PlaySleepRecordAlarmTests.swift */,
+				5659257A246745620031373B /* Mock */,
+				56592578246744D80031373B /* SleepAlarmViewModelTests.swift */,
 				56F7D3A724630DDC0096C1D6 /* Info.plist */,
 			);
 			path = PlaySleepRecordAlarmTests;
@@ -346,7 +366,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56F7D3A624630DDC0096C1D6 /* PlaySleepRecordAlarmTests.swift in Sources */,
+				56592580246746E00031373B /* LocalNotificationControllerMock.swift in Sources */,
+				5659257E246746350031373B /* AudioRecorderControllerMock.swift in Sources */,
+				56592579246744D80031373B /* SleepAlarmViewModelTests.swift in Sources */,
+				5659257C246745A90031373B /* AudioPlayerControllerMock.swift in Sources */,
+				56592582246748780031373B /* SleepAlarmPresenterMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

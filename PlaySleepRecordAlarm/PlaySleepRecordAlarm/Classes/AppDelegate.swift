@@ -21,6 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK:- Application lifecycle
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else {
+            return true
+        }
+        
         configureServices()
         
         return true
