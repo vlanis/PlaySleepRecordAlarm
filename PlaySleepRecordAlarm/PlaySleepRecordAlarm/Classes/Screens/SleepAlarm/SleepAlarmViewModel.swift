@@ -120,7 +120,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private var sleepSoundStopTimer: Timer?
     private var alarmStateTriggerTimer: Timer?
     
-    private var allPermissionsGranted: Bool = true
+    private var allPermissionsGranted: Bool = false
     
     private var audioSessionInterruptionNotificationObserver: NSObjectProtocol?
     private var shouldTryToResumeOnAudioSessionInterruptionEnded: Bool = false
@@ -235,6 +235,8 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     // MARK:- Permissions
     
     func requestPermissions() {
+        self.allPermissionsGranted = true
+        
         audioRecorderController.requestPermission { [unowned self] allowed in
             self.allPermissionsGranted = self.allPermissionsGranted && allowed
         }
