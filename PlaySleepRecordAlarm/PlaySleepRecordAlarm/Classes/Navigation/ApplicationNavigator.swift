@@ -13,7 +13,7 @@ protocol ApplicationNavigator {
     func presentSleepAlarmScreen()
 }
 
-final class ApplicationNavigatorImp: ApplicationNavigator, SleepAlarmPresenter {
+final class ApplicationNavigatorImp: NSObject, ApplicationNavigator, SleepAlarmPresenter, UIViewControllerTransitioningDelegate {
     
     // MARK:- Properties
     
@@ -63,7 +63,7 @@ final class ApplicationNavigatorImp: ApplicationNavigator, SleepAlarmPresenter {
         let timePickerViewController = UIStoryboard.main.instantiateViewController(withIdentifier: TimePickerViewController.storyboardIdentifier) as! TimePickerViewController
         
         timePickerViewController.modalPresentationStyle = .custom
-        timePickerViewController.transitioningDelegate = ContentSizeModalPresentationTransitioningDelegate.default
+        timePickerViewController.transitioningDelegate = self
         
         timePickerViewController.didFinish { [unowned timePickerViewController] time in
             completion(time)
@@ -85,5 +85,11 @@ final class ApplicationNavigatorImp: ApplicationNavigator, SleepAlarmPresenter {
         alert.addAction(UIAlertAction(title: NSLocalizedString("Stop", comment: "Stop"), style: .default, handler: {_ in completion?()}))
         
         rootNavigationController.present(alert, animated: true)
+    }
+    
+    // MARK:- UIViewControllerTransitioningDelegate
+    
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return ContentSizeModalPresentationController(presentedViewController: presented, presenting: source)
     }
 }

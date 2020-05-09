@@ -11,7 +11,6 @@
 		5659255F246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659255E246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift */; };
 		56592562246480FE0031373B /* TimePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56592561246480FE0031373B /* TimePickerViewController.swift */; };
 		56592564246489C40031373B /* UIStoryboard+PlaySleepRecordAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56592563246489C40031373B /* UIStoryboard+PlaySleepRecordAlarm.swift */; };
-		565925662465539A0031373B /* ContentSizeModalPresentationTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565925652465539A0031373B /* ContentSizeModalPresentationTransitioningDelegate.swift */; };
 		56592568246553C70031373B /* ContentSizeModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56592567246553C70031373B /* ContentSizeModalPresentationController.swift */; };
 		5659256B24657CD50031373B /* AudioPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659256A24657CD50031373B /* AudioPlayerController.swift */; };
 		5659256E24657DC20031373B /* nature.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5659256D24657DB50031373B /* nature.m4a */; };
@@ -46,7 +45,6 @@
 		5659255E246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+PlaySleepRecordAlarm.swift"; sourceTree = "<group>"; };
 		56592561246480FE0031373B /* TimePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerViewController.swift; sourceTree = "<group>"; };
 		56592563246489C40031373B /* UIStoryboard+PlaySleepRecordAlarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+PlaySleepRecordAlarm.swift"; sourceTree = "<group>"; };
-		565925652465539A0031373B /* ContentSizeModalPresentationTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeModalPresentationTransitioningDelegate.swift; sourceTree = "<group>"; };
 		56592567246553C70031373B /* ContentSizeModalPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeModalPresentationController.swift; sourceTree = "<group>"; };
 		5659256A24657CD50031373B /* AudioPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerController.swift; sourceTree = "<group>"; };
 		5659256D24657DB50031373B /* nature.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = nature.m4a; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 			isa = PBXGroup;
 			children = (
 				56592561246480FE0031373B /* TimePickerViewController.swift */,
-				565925652465539A0031373B /* ContentSizeModalPresentationTransitioningDelegate.swift */,
 				56592567246553C70031373B /* ContentSizeModalPresentationController.swift */,
 			);
 			path = TimePicker;
@@ -336,7 +333,6 @@
 				5659255F246444FF0031373B /* DateFormatter+PlaySleepRecordAlarm.swift in Sources */,
 				56592562246480FE0031373B /* TimePickerViewController.swift in Sources */,
 				565925722465C3760031373B /* LocalNotificationController.swift in Sources */,
-				565925662465539A0031373B /* ContentSizeModalPresentationTransitioningDelegate.swift in Sources */,
 				5659256B24657CD50031373B /* AudioPlayerController.swift in Sources */,
 				56F7D3B7246435420096C1D6 /* SleepAlarmViewModel.swift in Sources */,
 				56F7D3BA246436810096C1D6 /* Row.swift in Sources */,
