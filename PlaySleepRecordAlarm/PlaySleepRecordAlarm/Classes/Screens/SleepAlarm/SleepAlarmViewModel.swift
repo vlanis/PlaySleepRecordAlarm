@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 protocol SleepAlarmViewModel {
     var rows: [RowDescription] {get}
@@ -109,6 +110,9 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     private var allPermissionsGranted: Bool = true
     
+    private var audioSessionInterruptionNotificationObserver: NSObjectProtocol?
+    private var shouldTryToResumeOnAudioSessionInterruptionEnded: Bool = false
+    
     // MARK:- Initalization
     
     init(audioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable, localNotificationController: LocalNotificationControllable) {
@@ -126,6 +130,14 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         self.localNotificationController.didReceiveNotificationAction() { [weak self] _ in
             self?.didReceiveAlarmNotification()
         }
+        
+        subscribeForAudioSessionInterruptionNotification()
+    }
+    
+    // MARK:- Memory management
+    
+    deinit {
+        unsubscribeFromAudioSessionInterruptionNotification()
     }
     
     // MARK:- Rows
@@ -431,5 +443,50 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         shouldPresentAlarmViewHandler?(NSLocalizedString("Alarm went off", comment: "Alarm went off"), { [weak self] in
             self?.resetState()
         })
+    }
+    
+    // MARK:- Audio Session Interruption
+    
+    private func subscribeForAudioSessionInterruptionNotification() {
+        unsubscribeFromAudioSessionInterruptionNotification()
+        audioSessionInterruptionNotificationObserver = NotificationCenter.default.addObserver(forName: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance(), queue: .main) { [unowned self] notification in
+            
+            guard let userInfo = notification.userInfo,
+                let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                    return
+            }
+            
+            switch type {
+            case .began:
+                if self.isRunnning {
+                    self.suspendCurrentState()
+                    self.shouldTryToResumeOnAudioSessionInterruptionEnded = true
+                }
+                
+            case .ended:
+                guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {
+                    return
+                }
+                
+                let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+                let shouldResume = options.contains(.shouldResume) ? true : false
+                if shouldResume && self.shouldTryToResumeOnAudioSessionInterruptionEnded {
+                    self.resumeCurrentState()
+                }
+                
+            @unknown default:
+                break
+            }
+        }
+    }
+    
+    private func unsubscribeFromAudioSessionInterruptionNotification() {
+        guard audioSessionInterruptionNotificationObserver != nil else {
+            return
+        }
+        
+        NotificationCenter.default.removeObserver(audioSessionInterruptionNotificationObserver!)
+        audioSessionInterruptionNotificationObserver = nil
     }
 }
