@@ -25,6 +25,8 @@ protocol SleepAlarmViewModel {
     
     func shouldPresentAlarmView(_ handler: ((_ message: String?, _ completion: @escaping () -> Void) -> Void)?)
     
+    func shouldReloadStateView(_ handler: ((_ state: StateView) -> Void)?)
+    
     func play()
     func pause()
     
@@ -57,6 +59,13 @@ enum SleepTimer: CustomStringConvertible {
             return seconds
         }
     }
+}
+
+enum StateView {
+    case idle
+    case fallingAsleep
+    case sleeping
+    case alarm
 }
 
 final class SleepAlarmViewModelImp: SleepAlarmViewModel {
@@ -101,6 +110,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     private var shouldPresentAlarmTimePickerHandler: ((_ currentAlarmTime: Date) -> Void)?
     private var shouldReloadPlaybackViewHandler: (() -> Void)?
     private var shouldPresentAlarmViewHandler: ((_ message: String?, _ completion: @escaping () -> Void) -> Void)?
+    private var shouldReloadStateViewHandler: ((_ state: StateView) -> Void)?
     
     private let audioPlayerController: AudioPlayerControllable
     private let audioRecorderController: AudioRecorderControllable
@@ -193,10 +203,18 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         shouldPresentAlarmViewHandler = handler
     }
     
+    func shouldReloadStateView(_ handler: ((_ state: StateView) -> Void)?) {
+        shouldReloadStateViewHandler = handler
+    }
+    
     // MARK:- Events
     
     private func didChangeSleepAlarmRelatedData() {
         reloadSleepAlarmView()
+    }
+    
+    private func willChangeState() {
+        clearCurrentState()
     }
     
     private func didChangeState() {
@@ -488,5 +506,23 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         
         NotificationCenter.default.removeObserver(audioSessionInterruptionNotificationObserver!)
         audioSessionInterruptionNotificationObserver = nil
+    }
+    
+    // MARK:- State View
+    
+    private func updateStateView() {
+        var stateView: StateView
+        switch state {
+        case .idle:
+            stateView = .idle
+        case .playing:
+            stateView = .fallingAsleep
+        case .recording:
+            stateView = .sleeping
+        case .alarm:
+            stateView = .alarm
+        }
+        
+        shouldReloadStateViewHandler?(stateView)
     }
 }

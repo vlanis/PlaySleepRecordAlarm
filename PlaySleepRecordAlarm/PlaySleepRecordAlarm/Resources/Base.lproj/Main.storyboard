@@ -16,10 +16,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="uCI-IS-lwD">
-                                <rect key="frame" x="15" y="670" width="384" height="120"/>
+                                <rect key="frame" x="15" y="640" width="384" height="150"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="ISP-lk-sBW"/>
+                                    <constraint firstAttribute="height" constant="150" id="ISP-lk-sBW"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BasicTableViewCellIdentifier" textLabel="gJ9-jP-RDY" detailTextLabel="JrK-DW-tKM" style="IBUITableViewCellStyleValue1" id="lSS-bL-A6A" customClass="BasicTableViewCell" customModule="PlaySleepRecordAlarm" customModuleProvider="target">
@@ -70,25 +70,89 @@
                                     <action selector="playButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="xkU-Pi-lnH"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BSX-C7-Ld7">
+                                <rect key="frame" x="0.0" y="44" width="414" height="588"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A8M-40-W98">
+                                        <rect key="frame" x="15" y="102" width="384" height="384"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="A8M-40-W98" secondAttribute="height" multiplier="1:1" id="n7c-bo-SrR"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please setup you sleep timer and alarm" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="16y-Dm-qux">
+                                        <rect key="frame" x="8" y="264" width="398" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sweet dreams..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zu6-4N-xCm">
+                                        <rect key="frame" x="8" y="279" width="398" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="zzZ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QYb-nx-jo7">
+                                        <rect key="frame" x="171.5" y="267" width="71" height="54"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="45"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rise and shine! =)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wkr-cy-v8m">
+                                        <rect key="frame" x="8" y="279" width="398" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstItem="QYb-nx-jo7" firstAttribute="centerX" secondItem="BSX-C7-Ld7" secondAttribute="centerX" id="06D-pV-o82"/>
+                                    <constraint firstItem="QYb-nx-jo7" firstAttribute="centerY" secondItem="BSX-C7-Ld7" secondAttribute="centerY" id="4d6-wx-woz"/>
+                                    <constraint firstItem="A8M-40-W98" firstAttribute="leading" secondItem="BSX-C7-Ld7" secondAttribute="leading" constant="15" id="6dy-if-1O8"/>
+                                    <constraint firstItem="Wkr-cy-v8m" firstAttribute="centerX" secondItem="BSX-C7-Ld7" secondAttribute="centerX" id="BJx-fG-2Fa"/>
+                                    <constraint firstItem="A8M-40-W98" firstAttribute="centerX" secondItem="BSX-C7-Ld7" secondAttribute="centerX" id="GpN-gb-r91"/>
+                                    <constraint firstItem="16y-Dm-qux" firstAttribute="centerX" secondItem="BSX-C7-Ld7" secondAttribute="centerX" id="OFP-RR-5Je"/>
+                                    <constraint firstItem="A8M-40-W98" firstAttribute="centerY" secondItem="BSX-C7-Ld7" secondAttribute="centerY" id="cc1-bo-vXL"/>
+                                    <constraint firstAttribute="trailing" secondItem="Wkr-cy-v8m" secondAttribute="trailing" constant="8" id="chp-E3-gby"/>
+                                    <constraint firstItem="Zu6-4N-xCm" firstAttribute="centerY" secondItem="BSX-C7-Ld7" secondAttribute="centerY" id="dLV-no-Hqd"/>
+                                    <constraint firstItem="16y-Dm-qux" firstAttribute="centerY" secondItem="BSX-C7-Ld7" secondAttribute="centerY" id="dvT-uO-FKm"/>
+                                    <constraint firstAttribute="trailing" secondItem="A8M-40-W98" secondAttribute="trailing" constant="15" id="hIG-bw-zQk"/>
+                                    <constraint firstAttribute="trailing" secondItem="16y-Dm-qux" secondAttribute="trailing" constant="8" id="iCn-4D-yZg"/>
+                                    <constraint firstItem="Zu6-4N-xCm" firstAttribute="centerX" secondItem="BSX-C7-Ld7" secondAttribute="centerX" id="sjK-Ij-1z6"/>
+                                    <constraint firstItem="Wkr-cy-v8m" firstAttribute="centerY" secondItem="BSX-C7-Ld7" secondAttribute="centerY" id="vgM-aZ-Nir"/>
+                                    <constraint firstAttribute="trailing" secondItem="Zu6-4N-xCm" secondAttribute="trailing" constant="8" id="zBN-fj-Nfw"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="3Dz-f0-10R" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="1Pu-e1-c1K"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="3Dz-f0-10R" secondAttribute="bottom" constant="8" id="1T9-MD-xch"/>
+                            <constraint firstItem="uCI-IS-lwD" firstAttribute="top" secondItem="BSX-C7-Ld7" secondAttribute="bottom" constant="8" symbolic="YES" id="5yw-mZ-dcT"/>
                             <constraint firstItem="3Dz-f0-10R" firstAttribute="leading" secondItem="2LU-Tf-R9k" secondAttribute="leading" id="8jq-e7-n0Z"/>
                             <constraint firstItem="3Dz-f0-10R" firstAttribute="top" secondItem="uCI-IS-lwD" secondAttribute="bottom" constant="20" id="BQx-ET-ry5"/>
                             <constraint firstItem="3Dz-f0-10R" firstAttribute="trailing" secondItem="2LU-Tf-R9k" secondAttribute="trailing" id="CEb-vL-iZk"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uCI-IS-lwD" secondAttribute="trailing" constant="15" id="Uqb-fA-8Oh"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BSX-C7-Ld7" secondAttribute="trailing" id="adx-IR-FLR"/>
+                            <constraint firstItem="BSX-C7-Ld7" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="afi-hf-cu3"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Dz-f0-10R" secondAttribute="trailing" constant="15" id="dpB-y8-ypR"/>
                             <constraint firstItem="3Dz-f0-10R" firstAttribute="bottom" secondItem="2LU-Tf-R9k" secondAttribute="bottom" id="fR2-2Y-IJ3"/>
+                            <constraint firstItem="BSX-C7-Ld7" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="kpR-X1-Njo"/>
                             <constraint firstItem="3Dz-f0-10R" firstAttribute="top" secondItem="2LU-Tf-R9k" secondAttribute="top" id="pkt-QP-vIe"/>
                             <constraint firstItem="uCI-IS-lwD" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="xnN-4R-Vpe"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="alarmStateLabel" destination="Wkr-cy-v8m" id="3ca-9a-YtK"/>
+                        <outlet property="circleView" destination="A8M-40-W98" id="vhm-e5-bgg"/>
+                        <outlet property="fallingAsleepStateLabel" destination="Zu6-4N-xCm" id="Ayv-3Z-sl3"/>
+                        <outlet property="idleStateLabel" destination="16y-Dm-qux" id="P8b-QJ-V1n"/>
                         <outlet property="pauseButton" destination="2LU-Tf-R9k" id="PFu-wu-CeS"/>
                         <outlet property="playButton" destination="3Dz-f0-10R" id="Suw-Li-sbC"/>
+                        <outlet property="sleepingStateLabel" destination="QYb-nx-jo7" id="zPI-7B-r8z"/>
+                        <outlet property="stateContainerView" destination="BSX-C7-Ld7" id="GZ3-QO-PMO"/>
                         <outlet property="tableView" destination="uCI-IS-lwD" id="VEk-6R-ZiF"/>
                     </connections>
                 </viewController>

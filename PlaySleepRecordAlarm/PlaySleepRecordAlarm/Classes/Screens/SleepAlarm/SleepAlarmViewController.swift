@@ -19,6 +19,7 @@ final class SleepAlarmViewController: UIViewController {
             viewModel?.shouldPresentAlarmTimePicker(nil)
             viewModel?.shouldReloadPlaybackView(nil)
             viewModel?.shouldPresentAlarmView(nil)
+            viewModel?.shouldReloadStateView(nil)
         }
         
         didSet {
@@ -41,6 +42,10 @@ final class SleepAlarmViewController: UIViewController {
             viewModel?.shouldPresentAlarmView { [weak self] message, completion in
                 self?.presentAlert(message: message, completion: completion)
             }
+            
+            viewModel?.shouldReloadStateView { [weak self] stateView in
+                self?.reloadStateView(stateView)
+            }
         }
     }
     
@@ -52,6 +57,37 @@ final class SleepAlarmViewController: UIViewController {
     
     @IBOutlet var playButton: UIButton!
     @IBOutlet var pauseButton: UIButton!
+    @IBOutlet var stateContainerView: UIView!
+    @IBOutlet var circleView: UIView! {
+        didSet {
+            circleView.layer.borderColor = UIColor.systemBlue.cgColor
+            circleView.layer.borderWidth = 2
+        }
+    }
+    
+    @IBOutlet var idleStateLabel: UILabel! {
+        didSet {
+            idleStateLabel.text = NSLocalizedString("Please setup you sleep timer and alarm", comment: "Please setup you sleep timer and alarm")
+        }
+    }
+    
+    @IBOutlet var fallingAsleepStateLabel: UILabel! {
+        didSet {
+            fallingAsleepStateLabel.text = NSLocalizedString("Sweet dreams...", comment: "Sweet dreams...")
+        }
+    }
+    
+    @IBOutlet var sleepingStateLabel: UILabel! {
+        didSet {
+            sleepingStateLabel.text = "zzZ"
+        }
+    }
+    
+    @IBOutlet var alarmStateLabel: UILabel! {
+        didSet {
+            alarmStateLabel.text = "Rise and shine! =)"
+        }
+    }
     
     // MARK:- View lifecycle
     
@@ -73,6 +109,15 @@ final class SleepAlarmViewController: UIViewController {
         reloadPlaybackView()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let expectedCornerRadius = round(circleView.frame.size.height / 2)
+        if circleView.layer.cornerRadius != expectedCornerRadius {
+            circleView.layer.cornerRadius = expectedCornerRadius
+        }
+    }
+    
     // MARK:- UI
     
     func reloadSleepAlarmList() {
@@ -82,6 +127,13 @@ final class SleepAlarmViewController: UIViewController {
     func reloadPlaybackView() {
         playButton.isHidden = viewModel.isRunnning ? true : false
         pauseButton.isHidden = !playButton.isHidden
+    }
+    
+    func reloadStateView(_ stateView: StateView) {
+        idleStateLabel.isHidden = (stateView == .idle) ? false : true
+        fallingAsleepStateLabel.isHidden = (stateView == .fallingAsleep) ? false : true
+        sleepingStateLabel.isHidden = (stateView == .sleeping) ? false : true
+        alarmStateLabel.isHidden = (stateView == .alarm) ? false : true
     }
     
     // MARK:- Actions
