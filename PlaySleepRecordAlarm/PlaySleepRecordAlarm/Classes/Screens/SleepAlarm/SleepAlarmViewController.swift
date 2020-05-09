@@ -16,33 +16,18 @@ final class SleepAlarmViewController: UIViewController {
     
     var viewModel: SleepAlarmViewModel! {
         willSet {
-            viewModel?.shouldPresentSleepTimerOptions(nil)
             viewModel?.shouldReloadSleepAlarmView(nil)
-            viewModel?.shouldPresentAlarmTimePicker(nil)
             viewModel?.shouldReloadPlaybackView(nil)
-            viewModel?.shouldPresentAlarmView(nil)
             viewModel?.shouldReloadStateView(nil)
         }
         
         didSet {
-            viewModel?.shouldPresentSleepTimerOptions { [weak self] options in
-                self?.presentSleepTimerOptions(options)
-            }
-            
             viewModel?.shouldReloadSleepAlarmView { [weak self] in
                 self?.reloadSleepAlarmList()
             }
             
-            viewModel?.shouldPresentAlarmTimePicker { [weak self] alarmTime in
-                self?.presentTimePicker(time: alarmTime)
-            }
-            
             viewModel?.shouldReloadPlaybackView { [weak self] in
                 self?.reloadPlaybackView()
-            }
-            
-            viewModel?.shouldPresentAlarmView { [weak self] message, completion in
-                self?.presentAlert(message: message, completion: completion)
             }
             
             viewModel?.shouldReloadStateView { [weak self] stateView in
@@ -148,62 +133,6 @@ final class SleepAlarmViewController: UIViewController {
     
     @IBAction func pauseButtonPressed() {
         viewModel.pause()
-    }
-    
-    // MARK:- Events
-    
-    func didSelectSleepTimerOption(_ sleepTimer: SleepTimer) {
-        viewModel.didSelectSleepTimerOption(sleepTimer)
-    }
-    
-    func didSelectAlarmTime(_ alarmTime: Date) {
-        viewModel.didSelectAlarmTime(alarmTime)
-    }
-    
-    // MARK:- Presentation
-    
-    // TODO: all presentation from this section should be moved to a Presenter
-    
-    func presentSleepTimerOptions(_ options: [SleepTimer]) {
-        let actionSheet = UIAlertController(title: NSLocalizedString("Sleep Timer", comment: "Sleep Timer"), message: nil, preferredStyle: .actionSheet)
-        
-        options.forEach { sleepTimer in
-            let action = UIAlertAction(title: String(describing: sleepTimer), style: .default, handler: { [unowned self] _ in
-                self.didSelectSleepTimerOption(sleepTimer)
-            })
-            actionSheet.addAction(action)
-        }
-        
-        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel))
-        
-        present(actionSheet, animated: true)
-    }
-    
-    func presentTimePicker(time: Date) {
-        let timePickerViewController = UIStoryboard.main.instantiateViewController(withIdentifier: TimePickerViewController.storyboardIdentifier) as! TimePickerViewController
-        
-        timePickerViewController.modalPresentationStyle = .custom
-        timePickerViewController.transitioningDelegate = ContentSizeModalPresentationTransitioningDelegate.default
-        
-        timePickerViewController.didFinish { [unowned self, timePickerViewController] time in
-            self.didSelectAlarmTime(time)
-            timePickerViewController.dismiss(animated: true)
-        }
-        
-        timePickerViewController.didCancel { [unowned timePickerViewController] in
-            timePickerViewController.dismiss(animated: true)
-        }
-        
-        timePickerViewController.initialDate = time
-        
-        present(timePickerViewController, animated: true)
-    }
-    
-    func presentAlert(message: String?, completion: (() -> Void)?) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Stop", comment: "Stop"), style: .default, handler: {_ in completion?()}))
-        
-        present(alert, animated: true)
     }
 }
 

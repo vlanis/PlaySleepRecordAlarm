@@ -14,16 +14,8 @@ protocol SleepAlarmViewModel {
     
     var isRunnning: Bool {get}
     
-    func shouldPresentSleepTimerOptions(_ handler: ((_ options: [SleepTimer]) -> Void)?)
-    func didSelectSleepTimerOption(_ sleepTimer: SleepTimer)
-    
     func shouldReloadSleepAlarmView(_ handler: (() -> Void)?)
     func shouldReloadPlaybackView(_ handler: (() -> Void)?)
-    
-    func shouldPresentAlarmTimePicker(_ handler: ((_ currentAlarmTime: Date) -> Void)?)
-    func didSelectAlarmTime(_ alarmTime: Date)
-    
-    func shouldPresentAlarmView(_ handler: ((_ message: String?, _ completion: @escaping () -> Void) -> Void)?)
     
     func shouldReloadStateView(_ handler: ((_ state: StateView) -> Void)?)
     
@@ -31,6 +23,12 @@ protocol SleepAlarmViewModel {
     func pause()
     
     func requestPermissions()
+}
+
+protocol SleepAlarmPresenter {
+    func presentSleepTimerOptionsScreen(_ options: [SleepTimer], completion: @escaping (_ sleepTimer: SleepTimer?) -> Void)
+    func presentTimePicker(time: Date?, completion: @escaping (_ time: Date?) -> Void)
+    func presentAlarmAlert(message: String?, completion: (() -> Void)?)
 }
 
 enum SleepTimer: CustomStringConvertible {
@@ -109,17 +107,15 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
                                                    .minutes(15),
                                                    .minutes(20)]
     
-    private var shouldPresentSleepTimerOptionsHandler: ((_ options: [SleepTimer]) -> Void)?
     private var shouldReloadSleepAlarmViewHandler: (() -> Void)?
-    private var shouldPresentAlarmTimePickerHandler: ((_ currentAlarmTime: Date) -> Void)?
     private var shouldReloadPlaybackViewHandler: (() -> Void)?
-    private var shouldPresentAlarmViewHandler: ((_ message: String?, _ completion: @escaping () -> Void) -> Void)?
     private var shouldReloadStateViewHandler: ((_ state: StateView) -> Void)?
     
     private let audioPlayerController: AudioPlayerControllable
     private let audioRecorderController: AudioRecorderControllable
     private let localNotificationController: LocalNotificationControllable
     private let alarmAudioPlayerController: AudioPlayerControllable
+    private let presenter: SleepAlarmPresenter
     
     private var sleepSoundStopTimer: Timer?
     private var alarmStateTriggerTimer: Timer?
@@ -131,11 +127,13 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     // MARK:- Initalization
     
-    init(audioPlayerController: AudioPlayerControllable, alarmAudioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable, localNotificationController: LocalNotificationControllable) {
+    init(audioPlayerController: AudioPlayerControllable, alarmAudioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable, localNotificationController: LocalNotificationControllable, presenter: SleepAlarmPresenter) {
+        
         self.audioPlayerController = audioPlayerController
         self.audioRecorderController = audioRecorderController
         self.localNotificationController = localNotificationController
         self.alarmAudioPlayerController = alarmAudioPlayerController
+        self.presenter = presenter
         
         state = State.idle
         didChangeState()
@@ -163,7 +161,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             // TODO: change font color based while interactions are disabled
             cell.isUserInteractionEnabled = (self.state == .idle) ? true : false
         }, selection: { [unowned self] _ in
-            self.shouldPresentSleepTimerOptionsHandler?(self.sleepTimerOptions)
+            self.presentSleepTimerOptions()
         }, isEnabled: true)
         
         let alarmRow = Row<BasicTableViewCell>(configure: { [unowned self] cell, _ in
@@ -173,7 +171,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
             // TODO: change font color while interactions are disabled for better UX
             cell.isUserInteractionEnabled = (self.state == .idle) ? true : false
         }, selection: { [unowned self] _ in
-            self.shouldPresentAlarmTimePickerHandler?(self.alarmTime)
+            self.presentAlarmTimePicker()
         }, isEnabled: true)
         
         rows = [sleepTimerRow, alarmRow]
@@ -186,24 +184,12 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     // MARK:- Callbacks
     
-    func shouldPresentSleepTimerOptions(_ handler: ((_ options: [SleepTimer]) -> Void)?) {
-        shouldPresentSleepTimerOptionsHandler = handler
-    }
-    
     func shouldReloadSleepAlarmView(_ handler: (() -> Void)?) {
         shouldReloadSleepAlarmViewHandler = handler
     }
     
-    func shouldPresentAlarmTimePicker(_ handler: ((_ currentAlarmTime: Date) -> Void)?) {
-        shouldPresentAlarmTimePickerHandler = handler
-    }
-    
     func shouldReloadPlaybackView(_ handler: (() -> Void)?) {
         shouldReloadPlaybackViewHandler = handler
-    }
-    
-    func shouldPresentAlarmView(_ handler: ((_ message: String?, _ completion: @escaping () -> Void) -> Void)?) {
-        shouldPresentAlarmViewHandler = handler
     }
     
     func shouldReloadStateView(_ handler: ((_ state: StateView) -> Void)?) {
@@ -482,12 +468,6 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         localNotificationController.scheduleNotification(title: NSLocalizedString("Alarm went off", comment: "Alarm went off"), message: nil, time: alarmTime, completion: nil)
     }
     
-    private func presentAlarmView() {
-        shouldPresentAlarmViewHandler?(NSLocalizedString("Alarm went off", comment: "Alarm went off"), { [weak self] in
-            self?.resetState()
-        })
-    }
-    
     private func scheduleAlarmStateTriggerTimer() {
         let now = Date()
         let nowComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: now)
@@ -592,5 +572,33 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
         }
         
         shouldReloadStateViewHandler?(stateView)
+    }
+    
+    // MARK:- Presentation
+    
+    private func presentSleepTimerOptions() {
+        presenter.presentSleepTimerOptionsScreen(sleepTimerOptions) { [weak self] sleepTimer in
+            guard sleepTimer != nil else {
+                return
+            }
+            
+            self?.didSelectSleepTimerOption(sleepTimer!)
+        }
+    }
+    
+    private func presentAlarmTimePicker() {
+        presenter.presentTimePicker(time: alarmTime) { [weak self] time in
+            guard time != nil else {
+                return
+            }
+            
+            self?.didSelectAlarmTime(time!)
+        }
+    }
+    
+    private func presentAlarmView() {
+        presenter.presentAlarmAlert(message: NSLocalizedString("Alarm went off", comment: "Alarm went off")) { [weak self] in
+            self?.resetState()
+        }
     }
 }
