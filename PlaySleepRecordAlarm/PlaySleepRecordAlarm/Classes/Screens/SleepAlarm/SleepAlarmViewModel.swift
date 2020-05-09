@@ -131,7 +131,7 @@ final class SleepAlarmViewModelImp: SleepAlarmViewModel {
     
     // MARK:- Initalization
     
-    init(audioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable, localNotificationController: LocalNotificationControllable, alarmAudioPlayerController: AudioPlayerControllable) {
+    init(audioPlayerController: AudioPlayerControllable, alarmAudioPlayerController: AudioPlayerControllable, audioRecorderController: AudioRecorderControllable, localNotificationController: LocalNotificationControllable) {
         self.audioPlayerController = audioPlayerController
         self.audioRecorderController = audioRecorderController
         self.localNotificationController = localNotificationController

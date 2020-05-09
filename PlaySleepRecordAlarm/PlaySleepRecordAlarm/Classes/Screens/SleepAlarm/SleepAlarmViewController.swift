@@ -12,6 +12,8 @@ final class SleepAlarmViewController: UIViewController {
     
     // MARK:- Properties
     
+    static let storyboardIdentifier = "SleepAlarmViewControllerIdentifier"
+    
     var viewModel: SleepAlarmViewModel! {
         willSet {
             viewModel?.shouldPresentSleepTimerOptions(nil)
@@ -91,21 +93,11 @@ final class SleepAlarmViewController: UIViewController {
     
     // MARK:- View lifecycle
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        // TODO: move assembling to a Presenter/Builder
-        viewModel = SleepAlarmViewModelImp(
-            audioPlayerController: AudioPlayerController(audioFileNamed: "nature", fileExtension: "m4a", loop: true)!,
-            audioRecorderController: AudioRecorderController(),
-            localNotificationController: LocalNotificationController(),
-            alarmAudioPlayerController: AudioPlayerController(audioFileNamed: "alarm", fileExtension: "m4a", loop: true)!
-        )
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         viewModel.requestPermissions()
+        configureTransparentNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -124,6 +116,13 @@ final class SleepAlarmViewController: UIViewController {
     }
     
     // MARK:- UI
+    
+    func configureTransparentNavigationBar() {
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.view.backgroundColor = UIColor.clear
+    }
     
     func reloadSleepAlarmList() {
         tableView.reloadData()
